@@ -85,18 +85,18 @@ kubectl get nodes --watch
 [MediaWiki](https://www.mediawiki.org) is an extremely powerful, scalable software and a feature-rich wiki implementation that uses PHP to process and display data stored in a database, such as MariaDB.
 
 ```bash
-$ git clone https://charts.bitnami.com/bitnami
-$ tar -xvf 
-$ helm install my-mediawiki ./mediawiki				# Helm 3
-$ helm install --name my-mediawiki bitnami/<chart>    # Helm 2
+$ git clone https://github.com/vistasunil/mediawiki-demo.git
+$ tar -xvf mediawiki-0.x.x.tgz
+$ helm install my-mediawiki ./mediawiki		# Helm 3
+$ helm install --name my-mediawiki ./mediawiki	# Helm 2
 ```
 
 To update an exisiting _stable_ deployment with a chart hosted in the bitnami repository you can execute
 
 ```bash
-$ git clone https://charts.bitnami.com/bitnami
-$ tar -xvf 
-$ helm upgrade my-release bitnami/<chart>
+$ git clone https://github.com/vistasunil/mediawiki-demo.git
+$ tar -xvf mediawiki-0.x.x.tgz
+$ helm upgrade my-mediawiki ./mediawiki  
 ```
 
 ## Prerequisites

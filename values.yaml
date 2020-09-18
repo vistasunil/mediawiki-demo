@@ -1,7 +1,7 @@
 image:
   registry: docker.io
-  repository: vistasunil/mediawiki
-  tag: v7
+  repository: mediawiki #vistasunil/mediawiki
+  tag: latest #v8
   pullPolicy: IfNotPresent
 
 mediawikiUser: user

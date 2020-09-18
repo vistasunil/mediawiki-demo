@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "demo.fullname" . }}-mediawiki-db-srv
+  labels:
+    app: mediawiki-db
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3306
+      protocol: TCP
+  selector:
+    chart: {{ template "demo.fullname" . }}
+    app: mediawiki-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "demo.fullname" . }}-mediawiki-srv
+  labels:
+    app: mediawiki-app
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    chart: {{ template "demo.fullname" . }}
+    app: mediawiki-app

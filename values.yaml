@@ -1,7 +1,7 @@
 image:
   registry: docker.io
-  repository: mediawiki
-  tag: latest #1.34.0-debian-10-r31
+  repository: vistasunil/mediawiki
+  tag: v7
   pullPolicy: IfNotPresent
 
 mediawikiUser: user
@@ -12,7 +12,17 @@ mediawikiDBPass: pass123
 mediawikiEmail: user@example.com
 mediawikiName: My Wiki
 allowEmptyPassword: "yes"
+
 persistence:
   enabled: true
   accessMode: ReadWriteOnce
   size: 8Gi
+
+ingress:
+  enabled: false
+  hosts:
+  - name: mediawiki.local
+    tls: false
+    certManager: false
+    tlsSecret: mediawiki.local-tls
+    annotations:

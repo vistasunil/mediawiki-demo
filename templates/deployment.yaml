@@ -1,5 +1,5 @@
 ---
-apiVersion: apps/v1
+apiVersion: {{ template "mediawiki.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
   name: {{ template "mediawiki.fullname" . }}-mediawiki-db
@@ -19,33 +19,35 @@ spec:
           image: mariadb
           env:
             - name: MYSQL_DATABASE
-              value: my_wiki
+              value: {{ .Values.mediawikiDB | quote }}
             - name: MYSQL_USER
-              value: wikiuser
+              value: {{ .Values.mediawikiDBUser | quote }}
             - name: MYSQL_PASSWORD
-              value: example
+              value: {{ .Values.mediawikiDBPass | quote }}
             - name: MYSQL_RANDOM_ROOT_PASSWORD
               value: 'yes'
 
 ---
-apiVersion: apps/v1
+apiVersion: {{ template "mediawiki.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
   name: {{ template "mediawiki.fullname" . }}-mediawiki-app
+  labels:
+    app: {{ template "mediawiki.name" . }}
 spec:
   selector:
     matchLabels:
-      app: mediawiki-app
+      app: {{ template "mediawiki.name" . }}
   replicas: 2
   template:
     metadata:
       labels:
-        chart: {{ template "mediawiki.fullname" . }}
-        app: mediawiki-app
+        app: {{ template "mediawiki.name" . }}
     spec:
       containers:
-        - name: mediawiki-container
-          image: mediawiki
+        - name: {{ template "mediawiki.fullname" . }}
+          image: {{ template "mediawiki.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           volumeMounts:
             - mountPath: /var/www/html/images
               name: mediawiki-volume
@@ -59,11 +61,9 @@ spec:
             - containerPort: 80
       volumes:
         - name: mediawiki-volume
-          #- name: phpmount
-          #hostPath:
-          #  path: /home/ubuntu/mediawiki/phpfile/LocalSettings.php
-          #  type: FileOrCreate #Directory #OrCreate
-            #- hostPath:
-            #path: /home/ubuntu/mediawiki/phpfile/LocalSettings.php
-            #type: FileOrCreate
-            # name: mediawiki-localsettings
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ template "mediawiki.fullname" . }}-mediawiki{{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}

@@ -6,7 +6,7 @@ metadata:
   labels:
     app: mediawiki-db
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 3306
       protocol: TCP
@@ -19,12 +19,14 @@ kind: Service
 metadata:
   name: {{ template "mediawiki.fullname" . }}-mediawiki-srv
   labels:
-    app: mediawiki-app
+    app: {{ template "mediawiki.name" . }}
+    #    app: mediawiki-app
 spec:
   type: LoadBalancer
   ports:
     - port: 80
       protocol: TCP
   selector:
-    chart: {{ template "mediawiki.fullname" . }}
-    app: mediawiki-app
+    app: {{ template "mediawiki.name" . }}
+    #chart: {{ template "mediawiki.fullname" . }}
+    #app: mediawiki-app

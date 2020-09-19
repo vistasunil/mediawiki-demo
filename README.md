@@ -11,7 +11,7 @@ Create any IAM role for EKS operations, say eksrole with below AWS policies:
  AmazonEKSClusterPolicy
  AmazonEKSServicePolicy
 
-## Install kubectl and aws-iam-authenticator
+## Install kubectl, helm and aws-iam-authenticator
 
 Kubernetes 1.17:
 
@@ -23,6 +23,13 @@ chmod +x ./kubectl
 mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
 echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 kubectl version --short --client
+```
+Install helm
+
+```bash
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
 ```
 
 Install aws-iam-authenticator
